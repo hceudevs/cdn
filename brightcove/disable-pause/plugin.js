@@ -1,3 +1,4 @@
+var console = console || {log: function() {}};
 videojs.plugin('disablePause', function () {
     console.log("Pausing is disabled for this video");
     var css = document.createElement('link');
