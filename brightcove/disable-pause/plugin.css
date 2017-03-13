@@ -1,0 +1,4 @@
+#combo-wrapper,
+.video-js {
+    pointer-events: none;
+}
