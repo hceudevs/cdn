@@ -4,6 +4,6 @@ videojs.plugin('disablePause', function () {
     var css = document.createElement('link');
     css.setAttribute('type', 'text/css');
     css.setAttribute('rel', 'stylesheet');
-    css.setAttribute('href', 'https://cdn.rawgit.com/HomeCEU/cdn/feature/brightcove-plugin/brightcove/disable-pause/plugin.css');
+    css.setAttribute('href', 'https://rawgit.com/HomeCEU/cdn/feature/brightcove-plugin/brightcove/disable-pause/plugin.css');
     document.body.appendChild(css);
 });
