@@ -1,0 +1,6 @@
+.vjs-big-play-button {
+    display:none !important;
+}
+.vjs-control-bar {
+    visibility: visible !important;
+}
