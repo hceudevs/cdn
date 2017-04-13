@@ -3,6 +3,9 @@
 }
 .vjs-control-bar {
     visibility: visible !important;
+    transform: none;
+    -webkit-transform: none;
+    -ms-transform: none;
 }
 .video-js {
     width: 100% !important;
