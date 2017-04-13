@@ -1,7 +1,7 @@
 .vjs-big-play-button {
     display:none !important;
 }
-.vjs-control-bar {
+.not-hover .vjs-control-bar {
     visibility: visible !important;
     transform: none !important;
     -webkit-transform: none !important;
