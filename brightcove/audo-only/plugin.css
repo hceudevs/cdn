@@ -1,8 +1,8 @@
-.vjs-control-bar {
+.not-hover .vjs-control-bar {
     visibility: visible !important;
-    transform: none;
-    -webkit-transform: none;
-    -ms-transform: none;
+    transform: none !important;
+    -webkit-transform: none !important;
+    -ms-transform: none !important;
 }
 .vjs-loading-spinner {
     display:none !important;
