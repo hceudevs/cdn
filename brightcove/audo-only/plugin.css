@@ -7,6 +7,9 @@
     -webkit-transform: none;
     -ms-transform: none;
 }
+.vjs-loading-spinner {
+    display:none !important;
+}
 .video-js {
     width: 100% !important;
     max-width: 300px !important;
