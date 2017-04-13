@@ -1,12 +1,14 @@
-.not-hover .vjs-control-bar {
+.vjs-big-play-button {
+    display:none !important;
+}
+.vjs-control-bar {
     visibility: visible !important;
     transform: none !important;
     -webkit-transform: none !important;
     -ms-transform: none !important;
 }
-.vjs-loading-spinner {
-    display:none !important;
-}
 .video-js {
     width: 100% !important;
+    max-width: 300px !important;
+    margin:auto;
 }
