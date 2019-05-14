@@ -53,9 +53,9 @@
             .powered-by-logo {
                 height: 30px;
                 @if ($visible == white) {
-                    background: url('/assets/images/ceu360.png') no-repeat center center;
+                    background: url('../../assets/images/ceu360.png') no-repeat center center;
                 } @else {
-                    background: url('/assets/images/ceu360-dark.png') no-repeat center center;
+                    background: url('../../assets/images/ceu360-dark.png') no-repeat center center;
                 }
                 background-size: contain;
                 img {
