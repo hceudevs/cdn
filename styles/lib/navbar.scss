@@ -1,0 +1,23 @@
+$navbar: (
+    background: #fff,
+    color: #333,
+    link: inherit,
+    border: #efefef,
+    button: #333
+);
+@mixin navbar($navbar) {
+    $link: map-get($navbar, link);
+    $color: map-get($navbar, color);
+    $button: map-get($navbar, button);
+    $background: map-get($navbar, background);
+    $border: map-get($navbar, border);
+    @if ($link == inherit) {
+        $link: $color;
+    }
+    .mat-toolbar {
+        height:100%;
+        width:100%;
+        margin-right:0;
+    }
+
+}

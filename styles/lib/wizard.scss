@@ -1,0 +1,27 @@
+@import "pick-visible-color";
+$wizard: (
+    inactiveBackground: #efefef,
+    inactiveColor: #aaa,
+    completeBackground: #777,
+    currentColor: #333
+);
+@mixin wizard($wizard) {
+    $inactiveBackground: map-get($wizard, inactiveBackground);
+    $inactiveColor: map-get($wizard, inactiveColor);
+    $background: map-get($wizard, completeBackground);
+    $color: map-get($wizard, currentColor);
+    .tb-menu .progress-tab {
+        &.complete {
+            background-color: $background;
+            .themed-color,
+            .wizard-desktop-label,
+            .fa {
+                color: pick-visible-color($background, white, $color);
+            }
+
+            & + :before {
+                border-left-color: $background;
+            }
+        }
+    }
+}

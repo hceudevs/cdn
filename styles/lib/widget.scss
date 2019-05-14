@@ -1,0 +1,14 @@
+$widget: (
+    background: #fff,
+    color: #333
+);
+
+@mixin widget($widget) {
+    $background: map-get($widget, background);
+    $color: map-get($widget, color);
+    .widget-body {
+        background-color: $background;
+        color: $color;
+
+    }
+}

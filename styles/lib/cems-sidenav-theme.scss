@@ -1,0 +1,80 @@
+@mixin cems-sidenav-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+
+    $drawer-background-color: mat-color($primary, default) !default;
+    $visible: mat-color($primary, default-contrast) !default;
+
+    .mat-drawer:not(.white-sidenav) {
+        background-color: $drawer-background-color;
+        &.mat-drawer-side {
+            z-index:1;
+        }
+        .mat-expansion-panel {
+            box-shadow: none;
+            background-color: transparent;
+            .mat-icon {
+                svg {
+                    width: 20px;
+                }
+            }
+            .mat-expansion-panel-header {
+                background-color: $drawer-background-color;
+                .mat-expansion-panel-header-title, .mat-expansion-indicator::after, a {
+                    color: $visible;
+                    font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+                }
+            }
+            .mat-expansion-panel {
+                background-color: darken($drawer-background-color, 5%);
+                .mat-expansion-panel-header {
+                    background-color: darken($drawer-background-color, 5%);
+                }
+                .mat-expansion-panel {
+                    background-color: darken($drawer-background-color, 10%);
+                    .mat-expansion-panel-header {
+                        background-color: darken($drawer-background-color, 10%);
+                    }
+                }
+            }
+        }
+
+        color: $visible;
+        .mat-list-item {
+            cursor:pointer;
+        }
+        .mat-list-item a, .powered-by {
+            color: $visible;
+        }
+        .sidebar-footer {
+            .powered-by {
+                color: $visible;
+            }
+            .powered-by-logo {
+                height: 30px;
+                @if ($visible == white) {
+                    background: url('/assets/images/ceu360.png') no-repeat center center;
+                } @else {
+                    background: url('/assets/images/ceu360-dark.png') no-repeat center center;
+                }
+                background-size: contain;
+                img {
+                    width: 150px;
+                    max-height: 100%;
+                }
+            }
+        }
+    }
+    .mat-drawer-content {
+        display:flex !important;
+        flex-direction: column;
+        main, .flex-height, logged-in-legacy, legacy, .router-container {
+            flex-grow:1;
+            display:flex;
+            flex-direction:column;
+        }
+        .flex-grow {
+            flex-grow:1;
+        }
+    }
+}

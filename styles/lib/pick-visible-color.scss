@@ -1,0 +1,38 @@
+@function luma($c) {
+    $-local-red: red($c);
+    $-local-green: green($c);
+    $-local-blue: blue($c);
+
+    @return (($-local-red + $-local-red + $-local-blue + $-local-green + $-local-green + $-local-green) / 6) / 255;
+}
+
+@function pick-related-color($bg) {
+    $bg-luma: luma($bg);
+
+    @if $bg-luma < 0.71 {
+        @if $bg-luma < 0.3 {
+            @return lighten($bg, 70%);
+        }
+        @return lighten($bg, 50%);
+    } @else {
+        @if $bg-luma > .8 {
+            @return darken($bg, 40%);
+        }
+        @return darken($bg, 20%);
+    }
+}
+
+@function pick-visible-color($bg, $c1, $c2) {
+    $bg-luma: luma($bg);
+    $c1-luma: luma($c1);
+    $c2-luma: luma($c2);
+
+    $c1-diff: abs($bg-luma - $c1-luma);
+    $c2-diff: abs($bg-luma - $c2-luma);
+
+    @if $c1-diff > $c2-diff {
+        @return $c1;
+    } @else {
+        @return $c2;
+    }
+}

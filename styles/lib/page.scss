@@ -1,0 +1,39 @@
+$page: (
+    background: #fff,
+    color: #333,
+    icon: #333,
+    font: #{Roboto, "Helvetica Neue", sans-serif},
+    link: inherit,
+    header-weight: normal
+);
+
+@mixin page($page) {
+    $link: map-get($page, link);
+    $icon: map-get($page, icon);
+
+    color: map-get($page, color);
+
+    a, a:visited {
+        &:not(.btn) {
+            color: $link;
+        }
+    }
+    .card, .widget, .mat-card, .tb-content {
+        h1, h2, h3 {
+            border-color: $link;
+            font-weight: map-get($page, header-weight);
+        }
+        .themed-color, h1, h2, h3, h4 {
+            color: $link;
+        }
+        .widget-icon, .fa {
+            color: $icon;
+        }
+    }
+    a:hover .widget-icon,
+    a:hover .fa,
+    a:active .fa,
+    a:active .widget-icon {
+        color: darken($icon, 10%);
+    }
+}

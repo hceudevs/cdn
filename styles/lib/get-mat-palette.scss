@@ -1,0 +1,110 @@
+@import "pick-visible-color";
+
+@function color-diff($a, $b) {
+    $sat: saturation($a) - saturation($b);
+    $lig: lightness($a) - lightness($b);
+    $fn-sat: if($sat > 0, 'desaturate', 'saturate');
+    $fn-lig: if($lig > 0, 'darken', 'lighten');
+
+    @return (
+        adjust-hue: -(hue($a) - hue($b)),
+        "#{$fn-sat}": abs($sat),
+        "#{$fn-lig}": abs($lig)
+    );
+}
+
+@function safe-get-function($name) {
+    @if function-exists('get-function') {
+        @return get-function($name);
+    } @else {
+        @return $name;
+    }
+}
+
+@function palette-diff($palette) {
+    $base: map-get($palette, 'base');
+    $colors: map-get($palette, 'colors');
+    $diffs: ();
+
+    @each $color in $colors {
+        $diffs: append($diffs, color-diff($base, $color));
+    }
+
+    @return $diffs;
+}
+
+@function apply-diff($color, $diff) {
+    @each $function, $value in $diff {
+        $color: call(safe-get-function($function), $color, $value);
+    }
+
+    @return $color;
+}
+
+$base-palette: (
+    'base': #bd4c3d,
+    'colors': #cfdfe8 #bfb9c3 #cf9192 #bd4c3d #bb403b #bf3a32 #a03c32
+) !default;
+$palette-diff: palette-diff($base-palette);
+@function create-palette($base-color) {
+    $palette: ();
+
+    @each $diff in $palette-diff {
+        $palette: append($palette, apply-diff($base-color, $diff));
+    }
+
+    @return $palette;
+}
+
+@function palette($base-color) {
+    $colors: create-palette($base-color);
+    $keys: 'lightest' 'lighter' 'light' 'base' 'dark' 'darker' 'darkest';
+    $palette: ();
+
+    @for $i from 1 through min(length($colors), length($keys)) {
+        $palette: map-merge($palette, (nth($keys, $i): nth($colors, $i)));
+    }
+
+    @return $palette;
+}
+
+@function get-mat-palette($color) {
+    $custom-palette: palette($color);
+    $light: lighten($color, 80%);
+    $dark: darken($color, 70%);
+
+    @return map-merge($custom-palette, (
+        default: $color,
+        default-contrast: pick-related-color($color),
+        50 : lighten($color, 50%),
+        100 : lighten($color, 40%),
+        200 : lighten($color, 30%),
+        300 : lighten($color, 20%),
+        400 : lighten($color, 10%),
+        500 : $color,
+        600 : darken($color, 10%),
+        700 : darken($color, 20%),
+        800 : darken($color, 30%),
+        900 : darken($color, 40%),
+        A100 : lighten($color, 40%),
+        A200 : lighten($color, 30%),
+        A400 : lighten($color, 10%),
+        A700 : $color,
+        contrast: (
+            50 : pick-related-color(lighten($color, 50%)),
+            100 : pick-related-color(lighten($color, 40%)),
+            200 : pick-related-color(lighten($color, 30%)),
+            300 : pick-related-color(lighten($color, 20%)),
+            400 : pick-related-color(lighten($color, 10%)),
+            500 : pick-related-color($color),
+            600 : pick-related-color(darken($color, 10%)),
+            700 : pick-related-color(darken($color, 20%)),
+            800 : pick-related-color(darken($color, 30%)),
+            900 : pick-related-color(darken($color, 40%)),
+            A100 : pick-related-color(lighten($color, 30%)),
+            A200 : pick-related-color(lighten($color, 20%)),
+            A400 : pick-related-color(lighten($color, 10%)),
+            A700 : pick-related-color(darken($color, 20%))
+        )
+    ));
+}

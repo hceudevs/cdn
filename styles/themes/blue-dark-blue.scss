@@ -1,0 +1,7 @@
+@import '../lib/theme';
+@include theme((
+    primary : #003f6e,
+    accent  : #005C79,
+    toolbar : #fff,
+    name    : "blue-dark-blue"
+));

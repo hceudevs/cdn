@@ -1,0 +1,7 @@
+@import '../lib/theme';
+@include theme((
+    primary : #016c67,
+    accent  : #ec8e30,
+    toolbar : #fff,
+    name    : "pine-green"
+));

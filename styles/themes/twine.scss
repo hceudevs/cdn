@@ -1,0 +1,7 @@
+@import '../lib/theme';
+@include theme((
+    primary : #c3a076,
+    accent  : #f0e7dd,
+    toolbar : #fff,
+    name    : "twine"
+));

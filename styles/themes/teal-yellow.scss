@@ -1,0 +1,7 @@
+@import '../lib/theme';
+@include theme((
+    primary : #f9c710,
+    accent  : #00b1af,
+    toolbar : #fff,
+    name    : "teal-yellow"
+));

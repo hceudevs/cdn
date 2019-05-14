@@ -1,0 +1,86 @@
+@import "pick-visible-color";
+@import "button";
+@import "page";
+@import "widget";
+@import "wizard";
+@import "get-mat-palette";
+@import "cems-sidenav-theme";
+@import "../../node_modules/@angular/material/theming";
+
+@include mat-core();
+
+@mixin theme($theme) {
+
+    $name: map-get($theme, name);
+
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $toolbar: map-get($theme, toolbar);
+
+    $material: map-get($theme, material);
+
+    $mat-primary: get-mat-palette($primary);
+    $mat-accent: get-mat-palette($accent);
+    $mat-toolbar: get-mat-palette($toolbar);
+    $mat-caution: get-mat-palette(#ffd866);
+
+    @include angular-material-theme(mat-light-theme($mat-primary, $mat-accent));
+    @include cems-sidenav-theme(mat-light-theme($mat-primary, $mat-accent));
+    @include mat-button-theme(mat-light-theme($mat-accent, $mat-primary));
+    @include mat-toolbar-theme(mat-light-theme($mat-toolbar, $mat-primary));
+    @include mat-tabs-theme(mat-light-theme($mat-toolbar, $mat-primary));
+    @include mat-chips-theme(mat-light-theme($mat-primary, $mat-caution));
+    .fixed-toolbar-container .mat-toolbar {
+        border-bottom: 2px solid $primary;
+    }
+    .mat-form-field {
+        font-size: 16px;
+    }
+    .isolated-container {
+        $bg: $toolbar;
+        @if $bg == #ffffff {
+            $bg: #efefef;
+        }
+        background-color: $bg;
+    }
+    .mat-toolbar .touranchor--is-active {
+        background-color: mat-color($mat-toolbar);
+    }
+
+    @include button($primary);
+    .mat-sidenav-content {
+        color: #333;
+
+        .card, .widget, .mat-card, .tb-content {
+
+            .themed-color {
+                color: $primary;
+            }
+            .widget-icon {
+                color: $primary;
+            }
+        }
+        a:hover .widget-icon,
+        a:hover .fa,
+        a:active .fa,
+        a:active .widget-icon {
+            color: darken($primary, 10%);
+        }
+
+        @include button($primary);
+    }
+    .wizard {
+        @include wizard((
+            inactiveBackground: #efefef,
+            inactiveColor: #aaa,
+            completeBackground: $primary,
+            currentColor: pick-visible-color($primary, #fff, #333)
+        ));
+    }
+}
+.tool-bar .grey-background .widget {
+    background-color: transparent;
+    &.active {
+        background-color: transparent;
+    }
+}
