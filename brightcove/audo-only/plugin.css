@@ -1,0 +1,14 @@
+.vjs-big-play-button {
+    display:none !important;
+}
+.not-hover .vjs-control-bar {
+    visibility: visible !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    -ms-transform: none !important;
+}
+.video-js {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin:auto;
+}
