@@ -3,7 +3,6 @@ declare const videojs: any;
 class ProgressPlugin {
     static readonly GET_PROGRESS  = 'video.progress.get';
     static readonly SEND_PROGRESS = 'video.progress.set';
-    
     progress = 0;
 
     constructor(private player: any) {
