@@ -1,0 +1,69 @@
+declare const videojs: any;
+
+class ProgressPlugin {
+    static readonly GET_PROGRESS  = 'video.progress.get';
+    static readonly SEND_PROGRESS = 'video.progress.set';
+    
+    progress = 0;
+
+    constructor(private player: any) {
+        player.on("loadedmetadata", async () => {
+            this.progress = await this.getProgress();
+            console.log('Resume: ', this.progress);
+            // If video position is greater than zero, than start playback at that point.
+            if (this.progress > 0) {
+                console.log('Setting Time');
+                player.currentTime(this.progress);
+                player.play();
+            }
+        });
+
+        // +++ Increment the cookie +++
+        // Listen for when the current playback position has changed. This should be every 15-250 milliseconds.
+        player.on("timeupdate", () => {
+            let progress = player.currentTime();
+            // When the integer value changes, then update the cookie
+            if (Math.round(progress) > this.progress) {
+                this.progress = Math.round(progress) - 2;
+                this.trackProgress();
+            }
+        });
+
+        // +++ Reset the cookie +++
+        // When video playback reaches the end, then reset the cookie value to zero
+        player.on("ended", () => {
+            this.progress = 100;
+            this.trackProgress();
+            console.log('Video Ended');
+        });
+    }
+
+    trackProgress() {
+        console.log('Updating Progress', this.progress);
+        window.top.postMessage({
+            event: ProgressPlugin.SEND_PROGRESS,
+            data : this.progress
+        }, '*');
+    }
+
+    getProgress(): Promise<number> {
+        window.top.postMessage({
+            event: ProgressPlugin.GET_PROGRESS
+        }, '*');
+        return new Promise(resolve => {
+            let listener = (event) => {
+                if (event.data.event === ProgressPlugin.GET_PROGRESS) {
+                    resolve(Number(event.data.data));
+                    window.removeEventListener('message', listener);
+                }
+            };
+            window.addEventListener('message', listener);
+        })
+    }
+
+
+}
+
+videojs.registerPlugin('tracker', function (options) {
+    let pluginHandler = new ProgressPlugin(this);
+});
