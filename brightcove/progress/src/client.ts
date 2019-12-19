@@ -4,7 +4,6 @@ import {first, map}          from "rxjs/operators";
 
 export class ProgressPluginClient {
     static readonly PING          = 'video.progress.ping';
-    static readonly PONG          = 'video.progress.pong';
     static readonly GET_PROGRESS  = 'video.progress.get';
     static readonly SEND_PROGRESS = 'video.progress.set';
     hasPinged                     = false;
@@ -13,9 +12,7 @@ export class ProgressPluginClient {
         fromEvent(iframe.contentWindow, 'message')
             .pipe(map((event: any) => event.data))
             .subscribe(async (data) => {
-                console.log(data);
-                if (data.event === ProgressPluginClient.PONG) {
-                    console.log('plugin', 'PONGed');
+                if (data.event === ProgressPluginClient.PING) {
                     if (!this.hasPinged) {
                         this.hasPinged = true;
                         await this.onReady();
@@ -25,17 +22,6 @@ export class ProgressPluginClient {
                     await this.http.setProgress(data);
                 }
             });
-        this.ping().then();
-    }
-
-    async ping() {
-        if (!this.hasPinged) {
-            this.iframe.contentWindow.postMessage({
-                event: ProgressPluginClient.PING
-            }, '*');
-            await interval(300).pipe(first()).toPromise();
-            await this.ping();
-        }
     }
 
     onReady() {

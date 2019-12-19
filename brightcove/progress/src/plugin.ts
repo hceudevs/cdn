@@ -41,14 +41,9 @@ export class ProgressPlugin {
             console.log('Video Ended');
         });
 
-        window.addEventListener('message', (event) => {
-            if (event.data.event === ProgressPlugin.PING) {
-                console.log('plugin', 'PINGed');
-                window.top.postMessage({
-                    event: ProgressPlugin.PONG
-                }, '*');
-            }
-        });
+        window.top.postMessage({
+            event: ProgressPlugin.PING
+        }, '*');
     }
 
     trackProgress() {
