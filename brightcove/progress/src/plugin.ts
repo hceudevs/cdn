@@ -11,10 +11,11 @@ export class ProgressPlugin {
 
     constructor(private player: any) {
         fromEvent(window, 'message')
-            .pipe(filter((event: any) => event.data.event === ProgressEvents.GET_PROGRESS_RESPONSE))
-            .subscribe(event => {
-                this.progress = event.data.data;
-                this.progress = ((event.data.data) / 100) * this.duration;
+            .pipe(map((event: any) => JSON.parse(event.data || '{}')))
+            .pipe(filter((data: any) => data.event === ProgressEvents.GET_PROGRESS_RESPONSE))
+            .subscribe(data => {
+                this.progress = data.data;
+                this.progress = ((data.data) / 100) * this.duration;
                 if (this.progress > 0) {
                     player.currentTime(this.progress);
                     player.play();
@@ -42,22 +43,22 @@ export class ProgressPlugin {
                 this.trackProgress();
             });
 
-        window.postMessage({
+        window.postMessage(JSON.stringify({
             event: ProgressEvents.PING
-        }, '*');
+        }), '*');
     }
 
     trackProgress() {
-        window.postMessage({
+        window.postMessage(JSON.stringify({
             event: ProgressEvents.SET_PROGRESS,
             data : (this.progress / this.duration) * 100
-        }, '*');
+        }), '*');
     }
 
     getProgress() {
-        window.postMessage({
+        window.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS
-        }, '*');
+        }), '*');
     }
 
 
