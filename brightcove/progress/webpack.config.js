@@ -4,6 +4,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+    mode: 'production',
     optimization: {
         minimizer: [new UglifyJsPlugin()]
     },
