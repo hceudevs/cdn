@@ -29,6 +29,7 @@ export class ProgressPlugin {
                 }
             });
         fromEvent(player, 'loadstart')
+            .pipe(first())
             .subscribe(() => {
                 this.duration = player.mediainfo.duration;
                 this.getProgress();
