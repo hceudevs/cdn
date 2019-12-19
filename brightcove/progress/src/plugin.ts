@@ -32,6 +32,7 @@ export class ProgressPlugin {
             .pipe(first())
             .subscribe(() => {
                 this.duration = player.mediainfo.duration;
+                console.log('PLUGIN GET PROGRESS');
                 this.getProgress();
             });
         fromEvent(player, 'timeupdate')
