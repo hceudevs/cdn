@@ -12,11 +12,10 @@ export class ProgressPlugin {
 
     constructor(private player: any) {
         player.on("loadedmetadata", async () => {
+            console.log(player);
             this.progress = await this.getProgress();
-            console.log('Resume: ', this.progress);
             // If video position is greater than zero, than start playback at that point.
             if (this.progress > 0) {
-                console.log('Setting Time');
                 player.currentTime(this.progress);
                 player.play();
             }
@@ -36,9 +35,9 @@ export class ProgressPlugin {
         // +++ Reset the cookie +++
         // When video playback reaches the end, then reset the cookie value to zero
         player.on("ended", () => {
+            console.log(player.currentTime());
             this.progress = 100;
             this.trackProgress();
-            console.log('Video Ended');
         });
 
         window.top.postMessage({
@@ -47,7 +46,6 @@ export class ProgressPlugin {
     }
 
     trackProgress() {
-        console.log('Updating Progress', this.progress);
         window.top.postMessage({
             event: ProgressPlugin.SEND_PROGRESS,
             data : this.progress
