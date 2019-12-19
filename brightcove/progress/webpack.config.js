@@ -9,6 +9,7 @@ module.exports = {
     },
     entry: {
         client: './src/client.ts',
+        'demo-client': './src/demo-client.ts',
         plugin: './src/plugin.ts'
     },
     devtool: 'inline-source-map',
