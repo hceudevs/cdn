@@ -32,6 +32,7 @@ export class ProgressPlugin {
         fromEvent(player, 'timeupdate')
             .pipe(throttleTime(5000, async, {leading: true, trailing: true}))
             .subscribe(() => {
+                console.log(player.currentTime());
                 let progress = player.currentTime();
                 // When the integer value changes, then update the cookie
                 if (Math.round(progress) > this.progress) {
@@ -46,20 +47,20 @@ export class ProgressPlugin {
                 this.trackProgress();
             });
 
-        window.top.postMessage({
+        window.postMessage({
             event: ProgressPlugin.PING
         }, '*');
     }
 
     trackProgress() {
-        window.top.postMessage({
+        window.postMessage({
             event: ProgressPlugin.SEND_PROGRESS,
             data : (this.progress / this.duration) * 100
         }, '*');
     }
 
     getProgress() {
-        window.top.postMessage({
+        window.postMessage({
             event: ProgressPlugin.GET_PROGRESS
         }, '*');
     }
@@ -68,5 +69,7 @@ export class ProgressPlugin {
 }
 
 videojs.registerPlugin('progress', function (options) {
-    let pluginHandler = new ProgressPlugin(this);
+    let player = this;
+    console.log('player', player);
+    let pluginHandler = new ProgressPlugin(player);
 });

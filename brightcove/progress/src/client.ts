@@ -9,7 +9,7 @@ export class ProgressPluginClient {
     hasPinged                     = false;
 
     constructor(private iframe: HTMLIFrameElement, private http: Http) {
-        fromEvent(window, 'message')
+        fromEvent(iframe.contentWindow, 'message')
             .pipe(map((event: any) => event.data))
             .subscribe(async (data) => {
                 console.log(data);
