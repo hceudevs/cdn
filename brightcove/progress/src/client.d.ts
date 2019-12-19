@@ -4,7 +4,7 @@ export declare class ProgressPluginClient {
     private http;
     static readonly PING = "video.progress.ping";
     static readonly GET_PROGRESS = "video.progress.get";
-    static readonly SEND_PROGRESS = "video.progress.set";
+    static readonly SET_PROGRESS = "video.progress.set";
     hasPinged: boolean;
     constructor(iframe: HTMLIFrameElement, http: Http);
     onReady(): Promise<void>;
