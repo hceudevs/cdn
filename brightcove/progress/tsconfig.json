@@ -1,12 +1,12 @@
 {
-  "compileOnSave": true,
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./dist",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "es5",
+    "module": "commonjs",
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es5",

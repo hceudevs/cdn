@@ -1,11 +1,10 @@
 import {Http} from "./http";
 
-class ProgressPluginClient {
+export class ProgressPluginClient {
     static readonly PING          = 'video.progress.ping';
     static readonly PONG          = 'video.progress.pong';
     static readonly GET_PROGRESS  = 'video.progress.get';
     static readonly SEND_PROGRESS = 'video.progress.set';
-
     hasPinged = false;
 
     constructor(private iframe: HTMLIFrameElement, private http: Http) {
