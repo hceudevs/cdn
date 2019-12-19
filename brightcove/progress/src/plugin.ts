@@ -24,8 +24,8 @@ export class ProgressPlugin {
                 }
             });
         fromEvent(player, 'loadedmetadata')
-            .subscribe(() => {
-                console.log(player);
+            .subscribe((metadata) => {
+                console.log(metadata, player);
                 this.duration = player.duration;
                 this.getProgress();
             });
