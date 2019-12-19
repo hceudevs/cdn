@@ -68,6 +68,6 @@ export class ProgressPlugin {
 
 }
 
-videojs.registerPlugin('tracker', function (options) {
+videojs.registerPlugin('progress', function (options) {
     let pluginHandler = new ProgressPlugin(this);
 });
