@@ -6,7 +6,6 @@ export class ProgressPluginClient {
     static readonly PING         = 'video.progress.ping';
     static readonly GET_PROGRESS = 'video.progress.get';
     static readonly SET_PROGRESS = 'video.progress.set';
-    hasPinged                    = false;
 
     constructor(private iframe: HTMLIFrameElement, private http: Http) {
         fromEvent(iframe.contentWindow, 'message')
@@ -15,20 +14,13 @@ export class ProgressPluginClient {
                 if (data.event) {
                     console.log('CLIENT', data);
                 }
-                if (data.event === ProgressPluginClient.PING) {
-                    if (!this.hasPinged) {
-                        this.hasPinged = true;
-                        await this.onReady();
-                    }
+                if (data.event === ProgressPluginClient.GET_PROGRESS) {
+                    await this.sendProgress();
                 }
                 if (data.event === ProgressPluginClient.SET_PROGRESS) {
                     await this.http.setProgress(data);
                 }
             });
-    }
-
-    onReady() {
-        return this.sendProgress();
     }
 
     async sendProgress() {

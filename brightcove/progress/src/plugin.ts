@@ -16,7 +16,7 @@ export class ProgressPlugin {
         fromEvent(window, 'message')
             .pipe(tap((event: any) => {
                 if (event.data.event) {
-                    console.log('PLUGIN', event);
+                    console.log('PLUGIN', event.data.event);
                 }
             }))
             .pipe(filter((event: any) => event.data.event === ProgressPlugin.GET_PROGRESS))
