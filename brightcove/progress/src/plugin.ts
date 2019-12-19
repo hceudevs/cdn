@@ -1,16 +1,13 @@
 import {fromEvent}                             from "rxjs";
 import {filter, first, map, tap, throttleTime} from "rxjs/operators";
 import {async}                                 from "rxjs/internal/scheduler/async";
+import {ProgressEvents}                        from "./events";
 
 declare const videojs: any;
 
 export class ProgressPlugin {
-    static readonly PING         = 'video.progress.ping';
-    static readonly PONG         = 'video.progress.pong';
-    static readonly GET_PROGRESS = 'video.progress.get';
-    static readonly SET_PROGRESS = 'video.progress.set';
-    progress                     = 0;
-    duration                     = 0;
+    progress = 0;
+    duration = 0;
 
     constructor(private player: any) {
         fromEvent(window, 'message')
@@ -19,7 +16,7 @@ export class ProgressPlugin {
                     console.log('PLUGIN', event.data.event);
                 }
             }))
-            .pipe(filter((event: any) => event.data.event === ProgressPlugin.GET_PROGRESS + '.response'))
+            .pipe(filter((event: any) => event.data.event === ProgressEvents.GET_PROGRESS_RESPONSE))
             .subscribe(event => {
                 this.progress = event.data.data;
                 this.progress = ((event.data.data) / 100) * player.duration;
@@ -54,20 +51,20 @@ export class ProgressPlugin {
             });
 
         window.postMessage({
-            event: ProgressPlugin.PING
+            event: ProgressEvents.PING
         }, '*');
     }
 
     trackProgress() {
         window.postMessage({
-            event: ProgressPlugin.SET_PROGRESS,
+            event: ProgressEvents.SET_PROGRESS,
             data : (this.progress / this.duration) * 100
         }, '*');
     }
 
     getProgress() {
         window.postMessage({
-            event: ProgressPlugin.GET_PROGRESS
+            event: ProgressEvents.GET_PROGRESS
         }, '*');
     }
 
