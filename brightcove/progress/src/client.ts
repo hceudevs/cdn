@@ -9,10 +9,6 @@ export class ProgressPluginClient {
         fromEvent(iframe.contentWindow, 'message')
             .pipe(map((event: any) => event.data))
             .subscribe(async (data) => {
-                console.log('CLIENT', data);
-                if (data.event) {
-                    console.log('CLIENT', data);
-                }
                 if (data.event === ProgressEvents.GET_PROGRESS) {
                     await this.sendProgress();
                 }
