@@ -1,6 +1,6 @@
-import {fromEvent}                        from "rxjs";
-import {filter, first, map, throttleTime} from "rxjs/operators";
-import {async}                            from "rxjs/internal/scheduler/async";
+import {fromEvent}                             from "rxjs";
+import {filter, first, map, tap, throttleTime} from "rxjs/operators";
+import {async}                                 from "rxjs/internal/scheduler/async";
 
 declare const videojs: any;
 
@@ -14,6 +14,7 @@ export class ProgressPlugin {
 
     constructor(private player: any) {
         fromEvent(window, 'message')
+            .pipe(tap(event => console.log(event)))
             .pipe(filter((event: any) => event.data.event === ProgressPlugin.GET_PROGRESS))
             .subscribe(event => {
                 this.progress = event.data.data;

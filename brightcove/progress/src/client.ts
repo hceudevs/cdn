@@ -12,6 +12,7 @@ export class ProgressPluginClient {
         fromEvent(window, 'message')
             .pipe(map((event: any) => event.data))
             .subscribe(async (data) => {
+                console.log(data);
                 if (data.event === ProgressPluginClient.PING) {
                     if (!this.hasPinged) {
                         this.hasPinged = true;
