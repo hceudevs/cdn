@@ -19,7 +19,7 @@ export class ProgressPlugin {
                     console.log('PLUGIN', event.data.event);
                 }
             }))
-            .pipe(filter((event: any) => event.data.event === ProgressPlugin.GET_PROGRESS))
+            .pipe(filter((event: any) => event.data.event === ProgressPlugin.GET_PROGRESS + '.response'))
             .subscribe(event => {
                 this.progress = event.data.data;
                 this.progress = ((event.data.data) / 100) * player.duration;

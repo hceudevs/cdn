@@ -25,7 +25,7 @@ export class ProgressPluginClient {
 
     async sendProgress() {
         this.iframe.contentWindow.postMessage({
-            event: ProgressPluginClient.GET_PROGRESS,
+            event: ProgressPluginClient.GET_PROGRESS + '.response',
             data : await this.http.getProgress()
         }, '*');
     }
