@@ -8,6 +8,7 @@ let http: Http = {
     },
     async setProgress(value) {
         progress = value;
+        console.log('Received progress', value);
     }
 };
 let client     = new ProgressPluginClient(document.getElementById('plugin') as HTMLIFrameElement, http);
