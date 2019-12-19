@@ -33,12 +33,13 @@ export class ProgressPlugin {
                 this.getProgress();
             });
         fromEvent(player, 'timeupdate')
-            .pipe(throttleTime(5000, async, {leading: true, trailing: true}))
+            .pipe(throttleTime(5000, async, {trailing: true}))
             .subscribe(() => {
-                console.log(player.currentTime());
                 let progress = player.currentTime();
+                console.log(progress, this.progress);
                 // When the integer value changes, then update the cookie
                 if (Math.round(progress) > this.progress) {
+                    console.log('We are here');
                     this.progress = Math.round(progress) - 2;
                     this.trackProgress();
                 }
