@@ -1,8 +1,12 @@
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+    optimization: {
+        minimizer: [new UglifyJsPlugin()]
+    },
     entry: {
         client: './src/client.ts',
         plugin: './src/plugin.ts'

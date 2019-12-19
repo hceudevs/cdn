@@ -8,7 +8,7 @@ export declare class ProgressPluginClient {
     static readonly SEND_PROGRESS = "video.progress.set";
     hasPinged: boolean;
     constructor(iframe: HTMLIFrameElement, http: Http);
-    ping(): any;
+    ping(): Promise<void>;
     onReady(): Promise<void>;
     sendProgress(): Promise<void>;
 }

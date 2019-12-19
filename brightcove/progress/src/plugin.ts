@@ -1,3 +1,6 @@
+import {fromEvent}          from "rxjs";
+import {filter, first, map} from "rxjs/operators";
+
 declare const videojs: any;
 
 export class ProgressPlugin {
@@ -56,19 +59,15 @@ export class ProgressPlugin {
         }, '*');
     }
 
-    getProgress(): Promise<number> {
+    async getProgress(): Promise<number> {
         window.top.postMessage({
             event: ProgressPlugin.GET_PROGRESS
         }, '*');
-        return new Promise(resolve => {
-            let listener = (event) => {
-                if (event.data.event === ProgressPlugin.GET_PROGRESS) {
-                    resolve(Number(event.data.data));
-                    window.removeEventListener('message', listener);
-                }
-            };
-            window.addEventListener('message', listener);
-        })
+        return await fromEvent(window, 'message')
+            .pipe(filter((event: any) => event.data.event === ProgressPlugin.GET_PROGRESS))
+            .pipe(first())
+            .pipe(map(event => event.data.data))
+            .toPromise();
     }
 
 
