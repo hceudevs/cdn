@@ -23,10 +23,9 @@ export class ProgressPlugin {
                     player.play();
                 }
             });
-        fromEvent(player, 'loadedmetadata')
-            .subscribe((metadata) => {
-                console.log(metadata, player);
-                this.duration = player.duration;
+        fromEvent(player, 'loadstart')
+            .subscribe(() => {
+                this.duration = player.mediainfo.duration;
                 this.getProgress();
             });
         fromEvent(player, 'timeupdate')
