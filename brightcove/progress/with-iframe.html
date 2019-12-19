@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Start Plugin Dev</title>
+</head>
+<body>
+<iframe src="plugin.html" width="800" height="600" id="plugin"></iframe>
+<script src="client.js"></script>
+<script>
+    var progress = 0;
+    var http = {
+        getProgress: function () {
+            return new Promise(function (resolve) {
+                resolve(progress);
+            })
+        },
+        setProgress: function (value) {
+            return new Promise(function (resolve) {
+                progress = value;
+            });
+        }
+    };
+    var client = new ProgressPluginClient(document.getElementById('plugin'), http);
+</script>
+</body>
+</html>

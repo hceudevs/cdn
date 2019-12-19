@@ -1,9 +1,11 @@
 declare const videojs: any;
 
 class ProgressPlugin {
+    static readonly PING          = 'video.progress.ping';
+    static readonly PONG          = 'video.progress.pong';
     static readonly GET_PROGRESS  = 'video.progress.get';
     static readonly SEND_PROGRESS = 'video.progress.set';
-    progress = 0;
+    progress                      = 0;
 
     constructor(private player: any) {
         player.on("loadedmetadata", async () => {
@@ -34,6 +36,15 @@ class ProgressPlugin {
             this.progress = 100;
             this.trackProgress();
             console.log('Video Ended');
+        });
+
+        window.addEventListener('message', (event) => {
+            if (event.data.event === ProgressPlugin.PING) {
+                console.log('plugin', 'PINGed');
+                window.top.postMessage({
+                    event: ProgressPlugin.PONG
+                }, '*');
+            }
         });
     }
 

@@ -75,6 +75,14 @@ var ProgressPlugin = /** @class */ (function () {
             _this.trackProgress();
             console.log('Video Ended');
         });
+        window.addEventListener('message', function (event) {
+            if (event.data.event === ProgressPlugin.PING) {
+                console.log('plugin', 'PINGed');
+                window.top.postMessage({
+                    event: ProgressPlugin.PONG
+                }, '*');
+            }
+        });
     }
     ProgressPlugin.prototype.trackProgress = function () {
         console.log('Updating Progress', this.progress);
@@ -97,6 +105,8 @@ var ProgressPlugin = /** @class */ (function () {
             window.addEventListener('message', listener);
         });
     };
+    ProgressPlugin.PING = 'video.progress.ping';
+    ProgressPlugin.PONG = 'video.progress.pong';
     ProgressPlugin.GET_PROGRESS = 'video.progress.get';
     ProgressPlugin.SEND_PROGRESS = 'video.progress.set';
     return ProgressPlugin;
