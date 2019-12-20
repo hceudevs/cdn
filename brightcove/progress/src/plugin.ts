@@ -6,23 +6,21 @@ import {ProgressEvents}                 from "./events";
 declare const videojs: any;
 
 export class ProgressPlugin {
-    progress     = 0;
-    duration     = 0;
-    targetOrigin = '*';
+    progress = 0;
+    duration = 0;
 
     pinged = new Subject();
 
     constructor(private player: any) {
         console.log('Progress Plugin Loaded!');
-        fromEvent(window, 'message')
+        fromEvent(window.parent, 'message')
             .subscribe((event: MessageEvent) => {
                 let data = JSON.parse(event.data || '{}');
                 if (data.event === ProgressEvents.PING) {
                     this.pinged.next();
-                    this.targetOrigin = event.origin;
-                    window.postMessage(JSON.stringify({
+                    window.parent.postMessage(JSON.stringify({
                         event: ProgressEvents.PONG
-                    }), this.targetOrigin);
+                    }), '*');
                     fromEvent(player, 'loadstart')
                         .pipe(takeUntil(this.pinged))
                         .pipe(first())
@@ -49,9 +47,8 @@ export class ProgressPlugin {
                         });
                 }
                 if (data.event === ProgressEvents.GET_PROGRESS_RESPONSE) {
-                    this.targetOrigin = event.origin;
-                    this.progress     = data.data;
-                    this.progress     = ((data.data) / 100) * this.duration;
+                    this.progress = data.data;
+                    this.progress = ((data.data) / 100) * this.duration;
                     if (this.progress > 0) {
                         player.currentTime(this.progress);
                         player.play();
@@ -61,16 +58,16 @@ export class ProgressPlugin {
     }
 
     trackProgress() {
-        window.postMessage(JSON.stringify({
+        window.parent.postMessage(JSON.stringify({
             event: ProgressEvents.SET_PROGRESS,
             data : (this.progress / this.duration) * 100
-        }), this.targetOrigin);
+        }), '*');
     }
 
     getProgress() {
-        window.postMessage(JSON.stringify({
+        window.parent.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS
-        }), this.targetOrigin);
+        }), '*');
     }
 
 

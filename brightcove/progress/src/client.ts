@@ -4,7 +4,6 @@ import {ProgressEvents}      from "./events";
 import {first}               from "rxjs/operators";
 
 export class ProgressPluginClient {
-    targetOrigin = 'https://players.brightcove.net';
 
     connected = false;
 
@@ -17,7 +16,6 @@ export class ProgressPluginClient {
                     this.connected = true;
                 }
                 if (data.event === ProgressEvents.GET_PROGRESS) {
-                    this.targetOrigin = event.origin;
                     await this.sendProgress();
                 }
                 if (data.event === ProgressEvents.SET_PROGRESS) {
@@ -31,7 +29,7 @@ export class ProgressPluginClient {
         if (!this.connected) {
             this.window.postMessage(JSON.stringify({
                 event: ProgressEvents.PING
-            }), this.targetOrigin);
+            }), '*');
             await interval(500).pipe(first()).toPromise();
             await this.ping();
         }
@@ -41,7 +39,7 @@ export class ProgressPluginClient {
         this.window.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS_RESPONSE,
             data : await this.http.getProgress()
-        }), this.targetOrigin);
+        }), '*');
     }
 }
 
