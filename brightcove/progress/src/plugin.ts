@@ -46,6 +46,7 @@ export class ProgressPlugin {
         window.postMessage(JSON.stringify({
             event: ProgressEvents.PING
         }), '*');
+        console.log('Progress Plugin Loaded!');
     }
 
     trackProgress() {
