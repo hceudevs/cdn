@@ -25,3 +25,5 @@ export class ProgressPluginClient {
         }), '*');
     }
 }
+
+window['ProgressPluginClient'] = ProgressPluginClient;

@@ -1,6 +1,6 @@
-import {ProgressPluginClient} from "./client";
-import {Http}                 from "./http";
+import {Http} from "./http";
 
+declare const ProgressPluginClient: any;
 let progress   = 0;
 let http: Http = {
     async getProgress() {
