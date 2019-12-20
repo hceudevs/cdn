@@ -12,7 +12,7 @@ let http: Http = {
         console.log('Setting Progress', value);
     }
 };
-document.addEventListener('ready', () => {
+document.addEventListener('DOMContentLoaded', () => {
     let iframe = document.querySelector('iframe');
     console.log(iframe);
     let client = new ProgressPluginClient(iframe ? iframe.contentWindow : window, http);
