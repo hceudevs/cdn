@@ -5,8 +5,8 @@ import {ProgressEvents}      from "./events";
 
 export class ProgressPluginClient {
 
-    constructor(private iframe: HTMLIFrameElement, private http: Http) {
-        fromEvent(window.top, 'message')
+    constructor(private window: Window, private http: Http) {
+        fromEvent(this.window, 'message')
             .pipe(map((event: any) => JSON.parse(event.data || '{}')))
             .subscribe(async (data) => {
                 if (data.event === ProgressEvents.GET_PROGRESS) {
@@ -19,7 +19,7 @@ export class ProgressPluginClient {
     }
 
     async sendProgress() {
-        window.top.postMessage(JSON.stringify({
+        this.window.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS_RESPONSE,
             data : await this.http.getProgress()
         }), '*');

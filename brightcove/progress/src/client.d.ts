@@ -1,7 +1,7 @@
 import { Http } from "./http";
 export declare class ProgressPluginClient {
-    private iframe;
+    private window;
     private http;
-    constructor(iframe: HTMLIFrameElement, http: Http);
+    constructor(window: Window, http: Http);
     sendProgress(): Promise<void>;
 }

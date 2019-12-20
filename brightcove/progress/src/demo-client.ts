@@ -12,4 +12,7 @@ let http: Http = {
         console.log('Setting Progress', value);
     }
 };
-let client     = new ProgressPluginClient(document.getElementById('plugin') as HTMLIFrameElement, http);
+document.addEventListener('ready', () => {
+    let contentWindow = document.querySelector('')
+    let client     = new ProgressPluginClient(window, http);
+})

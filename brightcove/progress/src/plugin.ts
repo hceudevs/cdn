@@ -10,7 +10,7 @@ export class ProgressPlugin {
     duration = 0;
 
     constructor(private player: any) {
-        fromEvent(window.top, 'message')
+        fromEvent(window, 'message')
             .pipe(map((event: any) => JSON.parse(event.data || '{}')))
             .pipe(filter((data: any) => data.event === ProgressEvents.GET_PROGRESS_RESPONSE))
             .subscribe(data => {
@@ -43,20 +43,20 @@ export class ProgressPlugin {
                 this.trackProgress();
             });
 
-        window.top.postMessage(JSON.stringify({
+        window.postMessage(JSON.stringify({
             event: ProgressEvents.PING
         }), '*');
     }
 
     trackProgress() {
-        window.top.postMessage(JSON.stringify({
+        window.postMessage(JSON.stringify({
             event: ProgressEvents.SET_PROGRESS,
             data : (this.progress / this.duration) * 100
         }), '*');
     }
 
     getProgress() {
-        window.top.postMessage(JSON.stringify({
+        window.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS
         }), '*');
     }
@@ -65,6 +65,6 @@ export class ProgressPlugin {
 }
 
 videojs.registerPlugin('progress', function (options) {
-    let player = this;
+    let player        = this;
     let pluginHandler = new ProgressPlugin(player);
 });
