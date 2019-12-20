@@ -13,7 +13,7 @@ export class ProgressPlugin {
 
     constructor(private player: any) {
         console.log('Progress Plugin Loaded!');
-        fromEvent(window.parent, 'message')
+        fromEvent(window, 'message')
             .subscribe((event: MessageEvent) => {
                 let data = JSON.parse(event.data || '{}');
                 if (data.event === ProgressEvents.PING) {
