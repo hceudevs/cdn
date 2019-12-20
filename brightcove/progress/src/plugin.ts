@@ -10,7 +10,7 @@ export class ProgressPlugin {
     duration = 0;
 
     constructor(private player: any) {
-        fromEvent(window, 'message')
+        fromEvent(window.top, 'message')
             .pipe(map((event: any) => JSON.parse(event.data || '{}')))
             .pipe(filter((data: any) => data.event === ProgressEvents.GET_PROGRESS_RESPONSE))
             .subscribe(data => {
@@ -43,20 +43,20 @@ export class ProgressPlugin {
                 this.trackProgress();
             });
 
-        window.postMessage(JSON.stringify({
+        window.top.postMessage(JSON.stringify({
             event: ProgressEvents.PING
         }), '*');
     }
 
     trackProgress() {
-        window.postMessage(JSON.stringify({
+        window.top.postMessage(JSON.stringify({
             event: ProgressEvents.SET_PROGRESS,
             data : (this.progress / this.duration) * 100
         }), '*');
     }
 
     getProgress() {
-        window.postMessage(JSON.stringify({
+        window.top.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS
         }), '*');
     }
