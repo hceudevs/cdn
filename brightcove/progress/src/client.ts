@@ -24,7 +24,7 @@ export class ProgressPluginClient {
         this.window.postMessage(JSON.stringify({
             event: ProgressEvents.GET_PROGRESS_RESPONSE,
             data : await this.http.getProgress()
-        }), '*');
+        }), 'https://players.brightcove.net');
     }
 }
 
