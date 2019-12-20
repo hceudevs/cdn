@@ -17,7 +17,6 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
-            {from: 'src/plugin.html', to: '.'},
             {from: 'src/with-iframe.html', to: '.'}
         ])
     ],
