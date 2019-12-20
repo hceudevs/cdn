@@ -1,20 +1,15 @@
-import {Http}                from "./http";
-import {fromEvent, interval} from "rxjs";
-import {ProgressEvents}      from "./events";
-import {first}               from "rxjs/operators";
+import {Http}           from "./http";
+import {fromEvent}      from "rxjs";
+import {ProgressEvents} from "./events";
 
 export class ProgressPluginClient {
 
-    connected = false;
 
     constructor(private window: Window, private http: Http) {
         console.log('Progress Plugin Client Loaded!');
         fromEvent(window, 'message')
             .subscribe(async (event: MessageEvent) => {
                 let data = JSON.parse(event.data || '{}');
-                if (data.event === ProgressEvents.PONG) {
-                    this.connected = true;
-                }
                 if (data.event === ProgressEvents.GET_PROGRESS) {
                     await this.sendProgress();
                 }
@@ -22,17 +17,6 @@ export class ProgressPluginClient {
                     await this.http.setProgress(data);
                 }
             });
-        this.ping().then();
-    }
-
-    async ping() {
-        if (!this.connected) {
-            this.window.postMessage(JSON.stringify({
-                event: ProgressEvents.PING
-            }), '*');
-            await interval(500).pipe(first()).toPromise();
-            await this.ping();
-        }
     }
 
     async sendProgress() {
