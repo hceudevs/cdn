@@ -6,6 +6,8 @@ import {ProgressEvents}      from "./events";
 export class ProgressPluginClient {
 
     constructor(private window: Window, private http: Http) {
+        console.log('Progress Plugin Client Loaded!');
+        console.log(this.window);
         fromEvent(this.window, 'message')
             .pipe(map((event: any) => JSON.parse(event.data || '{}')))
             .subscribe(async (data) => {
