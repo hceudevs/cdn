@@ -9,6 +9,7 @@ module.exports = {
         minimizer: [new UglifyJsPlugin()]
     },
     entry: {
+        cems: './src/cems-client.ts',
         client: './src/client.ts',
         'demo-client': './src/demo-client.ts',
         plugin: './src/plugin.ts'
