@@ -5,7 +5,7 @@ import {ProgressEvents} from "./events";
 export class ProgressPluginClient {
 
 
-    constructor(private window: Window, private http: Http) {
+    constructor(protected window: Window, protected http: Http) {
         console.log('Progress Plugin Client Loaded!');
         fromEvent(window, 'message')
             .subscribe(async (event: MessageEvent) => {
