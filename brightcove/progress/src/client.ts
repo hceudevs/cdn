@@ -1,32 +1,21 @@
 import {Http}           from "./http";
-import {fromEvent}      from "rxjs";
-import {ProgressEvents} from "./events";
+import {ProgressPlugin} from "./plugin";
 
 export class ProgressPluginClient {
 
+    plugin: typeof ProgressPlugin;
 
     constructor(protected window: Window, protected http: Http) {
+        this.plugin = window['ProgressPlugin'];
+        this.plugin.onSetProgress.subscribe(async (progress: number) => {
+            console.log('Set Progress');
+            await this.http.setProgress(progress);
+        });
+        this.plugin.onLoaded.subscribe(async () => {
+            console.log('Getting Progress');
+            this.plugin.onGetProgress.next(await this.http.getProgress());
+        });
         console.log('Progress Plugin Client Loaded!');
-        fromEvent(window, 'message')
-            .subscribe(async (event: MessageEvent) => {
-                console.log(event.data);
-                let data = JSON.parse(event.data || '{}');
-                if (data.event === ProgressEvents.GET_PROGRESS) {
-                    console.log('Get Progress');
-                    await this.sendProgress();
-                }
-                if (data.event === ProgressEvents.SET_PROGRESS) {
-                    console.log('Set Progress');
-                    await this.http.setProgress(data);
-                }
-            });
-    }
-
-    async sendProgress() {
-        this.window.postMessage(JSON.stringify({
-            event: ProgressEvents.GET_PROGRESS_RESPONSE,
-            data : await this.http.getProgress()
-        }), '*');
     }
 }
 
