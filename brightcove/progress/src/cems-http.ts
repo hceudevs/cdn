@@ -26,7 +26,7 @@ export class CemsHttp implements Http {
             if (!this.enrollmentId) {
                 return null;
             }
-            let result = await Axios.post('/enrollment/' + this.enrollmentId + '/progress', {progress: value});
+            let result = await Axios.post('/enrollment/' + this.enrollmentId + '/progress', {percent: value});
             return result.data;
         } catch (e) {
             console.error(e);
