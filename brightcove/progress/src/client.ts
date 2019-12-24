@@ -11,9 +11,11 @@ export class ProgressPluginClient {
             .subscribe(async (event: MessageEvent) => {
                 let data = JSON.parse(event.data || '{}');
                 if (data.event === ProgressEvents.GET_PROGRESS) {
+                    console.log('Get Progress');
                     await this.sendProgress();
                 }
                 if (data.event === ProgressEvents.SET_PROGRESS) {
+                    console.log('Set Progress');
                     await this.http.setProgress(data);
                 }
             });
