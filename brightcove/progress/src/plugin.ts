@@ -6,11 +6,11 @@ import {ProgressEvents}      from "./events";
 declare const videojs: any;
 
 export class ProgressPlugin {
-    progress = 0;
-    duration = 0;
+    progress          = 0;
+    duration          = 0;
+    retrievedProgress = false;
 
-    constructor(private player: any) {
-        console.log('Progress Plugin Loaded!', player);
+    listenForWindowEvents() {
         fromEvent(window, 'message')
             .subscribe((event: MessageEvent) => {
                 let data = JSON.parse(event.data || '{}');
@@ -18,34 +18,71 @@ export class ProgressPlugin {
                     this.progress = data.data;
                     this.progress = ((data.data) / 100) * this.duration;
                     if (this.progress > 0) {
-                        player.currentTime(this.progress);
-                        player.play();
+                        this.player.currentTime(this.progress);
+                        this.player.play();
                     }
+                    this.retrievedProgress = true;
                 }
             });
-        fromEvent(player, 'loadstart')
+    }
+
+    listenForBrightcoveEvents() {
+        fromEvent(this.player, 'loadstart')
             .pipe(first())
             .subscribe(() => {
                 console.log('Load Start');
-                this.duration = player.mediainfo.duration;
+                this.duration = this.player.mediainfo.duration;
                 this.getProgress();
             });
-        fromEvent(player, 'timeupdate')
+        fromEvent(this.player, 'timeupdate')
             .pipe(throttleTime(5000, async, {trailing: true}))
             .subscribe(() => {
                 console.log('Time Update');
-                let progress = player.currentTime();
+                let progress = this.player.currentTime();
                 // When the integer value changes, then update the cookie
-                if (Math.round(progress) > this.progress) {
-                    this.progress = Math.round(progress) - 2;
-                    this.trackProgress();
-                }
+                this.trackOnceLoaded(progress);
             });
-        fromEvent(player, 'ended')
+        fromEvent(this.player, 'ended')
             .subscribe(() => {
                 this.progress = 100;
                 this.trackProgress();
             });
+    }
+
+    listenForHapyakEvents() {
+        let hapYak = this.player.hapyakViewer;
+        fromEvent(hapYak, 'customtrackingevent')
+            .subscribe((event: any) => {
+                if (['Progress', 'Seeked', 'Resume'].indexOf(event.properties['Action']) !== -1) {
+                    this.progress = Number(event.properties['Video Percent Complete'] || 0);
+                    if (this.duration === 0) {
+                        this.duration = Number(event.properties['Video Duration'] || 0);
+                        if (this.duration !== 0) {
+                            this.getProgress();
+                        }
+                    }
+                    this.trackProgress();
+                }
+            });
+    }
+
+    constructor(private player: any) {
+        console.log('Progress Plugin Loaded!', player);
+        this.listenForWindowEvents();
+        if (player.hapyakViewer) {
+            console.log('Listening for HapYak Events');
+            this.listenForHapyakEvents();
+        } else {
+            console.log('Listening for Brightcove Events');
+            this.listenForBrightcoveEvents();
+        }
+    }
+
+    private trackOnceLoaded(progress: number) {
+        if (this.retrievedProgress) {
+            this.progress = Math.round(progress) - 2;
+            this.trackProgress();
+        }
     }
 
     trackProgress() {
