@@ -5,9 +5,8 @@ import {async}               from "rxjs/internal/scheduler/async";
 declare const videojs: any;
 
 export class ProgressPlugin {
-    progress          = 0;
-    duration          = 0;
-    retrievedProgress = false;
+    progress = 0;
+    duration = 0;
 
     static onLoaded      = new Subject<void>();
     static onSetProgress = new Subject<number>();
@@ -29,7 +28,6 @@ export class ProgressPlugin {
         fromEvent(this.player, 'timeupdate')
             .pipe(throttleTime(5000, async, {trailing: true}))
             .subscribe(() => {
-                console.log('Time Update');
                 let progress = this.player.currentTime();
                 // When the integer value changes, then update the cookie
                 this.trackProgress(Math.round(progress) - 2);
@@ -46,7 +44,6 @@ export class ProgressPlugin {
         fromEvent(this.player, 'loadstart')
             .pipe(first())
             .subscribe(() => {
-                console.log('Load Start');
                 this.duration = this.player.mediainfo.duration;
                 ProgressPlugin.onLoaded.next();
             });

@@ -3,8 +3,8 @@ import {CemsHttp}             from "./cems-http";
 
 export class CemsProgressPluginClient extends ProgressPluginClient {
 
-    constructor(window: Window, enrollmentId: number) {
-        super(window, new CemsHttp(enrollmentId));
+    constructor(enrollmentId: number) {
+        super(new CemsHttp(enrollmentId));
     }
 }
 

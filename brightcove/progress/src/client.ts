@@ -7,7 +7,7 @@ export class ProgressPluginClient {
 
     plugin: typeof ProgressPlugin;
 
-    constructor(protected window: Window, protected http: Http) {
+    constructor(protected http: Http) {
         this.load().then();
     }
 
@@ -23,11 +23,9 @@ export class ProgressPluginClient {
 
     private onPluginAvailable() {
         this.plugin.onSetProgress.subscribe(async (progress: number) => {
-            console.log('Set Progress');
             await this.http.setProgress(progress);
         });
         this.plugin.onLoaded.subscribe(async () => {
-            console.log('Getting Progress');
             this.plugin.onGetProgress.next(await this.http.getProgress());
         });
         console.log('Progress Plugin Client Loaded!');

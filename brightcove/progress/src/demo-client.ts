@@ -13,6 +13,5 @@ let http: Http = {
     }
 };
 document.addEventListener('DOMContentLoaded', () => {
-    let iframe = document.querySelector('iframe');
-    let client = new ProgressPluginClient(iframe ? iframe.contentWindow : window, http);
+    let client = new ProgressPluginClient(http);
 });

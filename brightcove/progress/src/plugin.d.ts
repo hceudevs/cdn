@@ -3,7 +3,6 @@ export declare class ProgressPlugin {
     private player;
     progress: number;
     duration: number;
-    retrievedProgress: boolean;
     static onLoaded: Subject<void>;
     static onSetProgress: Subject<number>;
     static onGetProgress: Subject<number>;
