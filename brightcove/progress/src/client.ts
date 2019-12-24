@@ -13,10 +13,15 @@ export class ProgressPluginClient {
 
     async load() {
         this.plugin = window['ProgressPlugin'];
-        if (!this.plugin) {
-            await interval(500).pipe(first()).toPromise();
-            return await this.load();
+        if (this.plugin) {
+            this.onPluginAvailable();
+            return;
         }
+        await interval(500).pipe(first()).toPromise();
+        return await this.load();
+    }
+
+    private onPluginAvailable() {
         this.plugin.onSetProgress.subscribe(async (progress: number) => {
             console.log('Set Progress');
             await this.http.setProgress(progress);

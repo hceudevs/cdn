@@ -6,4 +6,5 @@ export declare class ProgressPluginClient {
     plugin: typeof ProgressPlugin;
     constructor(window: Window, http: Http);
     load(): any;
+    private onPluginAvailable;
 }
