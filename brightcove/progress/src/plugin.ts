@@ -10,7 +10,7 @@ export class ProgressPlugin {
     duration = 0;
 
     constructor(private player: any) {
-        console.log('Progress Plugin Loaded!');
+        console.log('Progress Plugin Loaded!', player);
         fromEvent(window, 'message')
             .subscribe((event: MessageEvent) => {
                 let data = JSON.parse(event.data || '{}');
@@ -26,12 +26,14 @@ export class ProgressPlugin {
         fromEvent(player, 'loadstart')
             .pipe(first())
             .subscribe(() => {
+                console.log('Load Start');
                 this.duration = player.mediainfo.duration;
                 this.getProgress();
             });
         fromEvent(player, 'timeupdate')
             .pipe(throttleTime(5000, async, {trailing: true}))
             .subscribe(() => {
+                console.log('Time Update');
                 let progress = player.currentTime();
                 // When the integer value changes, then update the cookie
                 if (Math.round(progress) > this.progress) {
