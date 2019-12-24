@@ -6,6 +6,8 @@ import {first}          from "rxjs/operators";
 export class ProgressPluginClient {
 
     plugin: typeof ProgressPlugin;
+    tick    = 0;
+    timeout = 10;
 
     constructor(protected http: Http) {
         this.load().then();
@@ -15,6 +17,11 @@ export class ProgressPluginClient {
         this.plugin = window['ProgressPlugin'];
         if (this.plugin) {
             this.onPluginAvailable();
+            return;
+        }
+        this.tick++;
+        if (this.tick >= this.timeout) {
+            console.log('Progress Plugin Not Detected');
             return;
         }
         await interval(500).pipe(first()).toPromise();
