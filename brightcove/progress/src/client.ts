@@ -1,12 +1,22 @@
 import {Http}           from "./http";
 import {ProgressPlugin} from "./plugin";
+import {interval}       from "rxjs";
+import {first}          from "rxjs/operators";
 
 export class ProgressPluginClient {
 
     plugin: typeof ProgressPlugin;
 
     constructor(protected window: Window, protected http: Http) {
+        this.load().then();
+    }
+
+    async load() {
         this.plugin = window['ProgressPlugin'];
+        if (!this.plugin) {
+            await interval(500).pipe(first()).toPromise();
+            return await this.load();
+        }
         this.plugin.onSetProgress.subscribe(async (progress: number) => {
             console.log('Set Progress');
             await this.http.setProgress(progress);

@@ -5,4 +5,5 @@ export declare class ProgressPluginClient {
     protected http: Http;
     plugin: typeof ProgressPlugin;
     constructor(window: Window, http: Http);
+    load(): any;
 }
