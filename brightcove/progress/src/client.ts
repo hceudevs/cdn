@@ -9,6 +9,7 @@ export class ProgressPluginClient {
         console.log('Progress Plugin Client Loaded!');
         fromEvent(window, 'message')
             .subscribe(async (event: MessageEvent) => {
+                console.log(event.data);
                 let data = JSON.parse(event.data || '{}');
                 if (data.event === ProgressEvents.GET_PROGRESS) {
                     console.log('Get Progress');
