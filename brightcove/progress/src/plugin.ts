@@ -15,10 +15,13 @@ export class ProgressPlugin {
     listenForGetProgress() {
         ProgressPlugin.onGetProgress
                       .subscribe(value => {
+                          let paused    = this.player.paused();
                           this.progress = (value / 100) * this.duration;
                           if (this.progress > 0) {
                               this.player.currentTime(this.progress);
-                              this.player.play();
+                              if (!paused) {
+                                  this.player.play();
+                              }
                           }
                           this.listenForProgressEvents();
                       });
