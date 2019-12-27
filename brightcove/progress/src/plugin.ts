@@ -15,19 +15,15 @@ export class ProgressPlugin {
     listenForGetProgress() {
         ProgressPlugin.onGetProgress
                       .subscribe(value => {
-                          let paused    = this.player.paused();
                           this.progress = (value / 100) * this.duration;
-                          this.setPlayerProgress(paused);
+                          this.setPlayerProgress();
                           this.listenForProgressEvents();
                       });
     }
 
-    private setPlayerProgress(paused) {
+    private setPlayerProgress() {
         if (this.progress > 0) {
             this.player.currentTime(this.progress);
-            if (!paused) {
-                this.player.play();
-            }
         }
     }
 
@@ -51,9 +47,8 @@ export class ProgressPlugin {
         fromEvent(this.player, 'loadstart')
             .pipe(first())
             .subscribe(() => {
-                let paused    = this.player.paused();
                 this.duration = this.player.mediainfo.duration;
-                this.setPlayerProgress(paused);
+                this.setPlayerProgress();
                 ProgressPlugin.onLoaded.next();
             });
 
