@@ -28,12 +28,14 @@ export class ProgressPluginClient {
         return await this.load();
     }
 
-    private onPluginAvailable() {
+    private async onPluginAvailable() {
+        let progress = await this.http.getProgress();
+        this.plugin.onGetProgress.next(progress);
         this.plugin.onSetProgress.subscribe(async (progress: number) => {
             await this.http.setProgress(progress);
         });
-        this.plugin.onLoaded.subscribe(async () => {
-            this.plugin.onGetProgress.next(await this.http.getProgress());
+        this.plugin.onLoaded.subscribe( () => {
+            this.plugin.onGetProgress.next(progress);
         });
         console.log('Progress Plugin Client Loaded!');
     }

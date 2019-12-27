@@ -7,6 +7,7 @@ export declare class ProgressPlugin {
     static onSetProgress: Subject<number>;
     static onGetProgress: Subject<number>;
     listenForGetProgress(): void;
+    private setPlayerProgress;
     listenForProgressEvents(): void;
     constructor(player: any);
     trackProgress(progress: number): void;
